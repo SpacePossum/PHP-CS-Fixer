@@ -890,20 +890,20 @@ class Tokens extends \SplFixedArray
      */
     public function isArrayMultiLine($index)
     {
+        if (!$this->isArray($index)) {
+            throw new \InvalidArgumentException('Not an array at given index');
+        }
+
         // Skip only when its an array, for short arrays we need the brace for correct
         // level counting
         if ($this[$index]->isGivenKind(T_ARRAY)) {
             $index = $this->getNextMeaningfulToken($index);
         }
 
-        try {
-            $endIndex = $this[$index]->equals('(')
-                ? $this->findBlockEnd(self::BLOCK_TYPE_PARENTHESIS_BRACE, $index)
-                : $this->findBlockEnd(self::BLOCK_TYPE_SQUARE_BRACE, $index)
-            ;
-        } catch (\InvalidArgumentException $e) {
-            return false;
-        }
+        $endIndex = $this[$index]->equals('(')
+            ? $this->findBlockEnd(self::BLOCK_TYPE_PARENTHESIS_BRACE, $index)
+            : $this->findBlockEnd(self::BLOCK_TYPE_SQUARE_BRACE, $index)
+        ;
 
         for (++$index; $index < $endIndex; ++$index) {
             $token = $this[$index];
