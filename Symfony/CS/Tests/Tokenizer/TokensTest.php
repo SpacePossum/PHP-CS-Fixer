@@ -882,4 +882,97 @@ PHP;
             array("<?=' '\n?><?=' ';\n", false),
         );
     }
+
+    /**
+     * @dataProvider provideIsArray
+     * @requires PHP 5.4
+     */
+    public function testIsArray($source, array $expected)
+    {
+        $tokens = Tokens::fromCode($source);
+        foreach ($expected as $index => $expected) {
+            $this->assertSame($expected[0], $tokens->isArray($index), sprintf('Expected %sto be an array', $expected[0] ? '' : 'not '));
+            if ($expected[0]) {
+                $this->assertSame($expected[1], $tokens->isArrayMultiLine($index), sprintf('Expected %sto be a multiline array', $expected[1] ? '' : 'not '));
+                $this->assertSame($expected[2], $tokens->isShortArray($index), sprintf('Expected %sto be a short array', $expected[2] ? '' : 'not '));
+            } else {
+                $this->assertFalse($tokens->isArrayMultiLine($index), 'Expected not to be a multi line array');
+                $this->assertFalse($tokens->isShortArray($index), 'Expected not to be a short array');
+            }
+        }
+    }
+
+    public function provideIsArray()
+    {
+        $cases = array(
+            array(
+                '<?php $a;',
+                array(1 => array(false)),
+            ),
+            array(
+                "<?php\n \$a = (0+1); // [0,1]",
+                array(1 => array(false)),
+            ),
+            array(
+                '<?php
+                    array("a" => 1);
+                ',
+                array(2 => array(true, false, false)),
+            ),
+            array(
+                // short array PHP 5.4 single line
+                '<?php
+                    ["a" => 2];
+                ',
+                array(2 => array(true, false, true)),
+            ),
+            array(
+                '<?php
+                    array(
+                        "a" => 3
+                    );
+                ',
+                array(2 => array(true, true, false)),
+            ),
+            array(
+                // short array PHP 5.4 multi line
+                '<?php
+                    [
+                        "a" => 4
+                    ];
+                ',
+                array(2 => array(true, true, true)),
+            ),
+            array(
+                '<?php
+                    array(
+                        "a" => array(5, 6, 7),
+8 => new \Exception(\'Ellow\')
+                    );
+                ',
+                array(2 => array(true, true, false)),
+            ),
+            array(
+                // mix short array syntax
+                '<?php
+                    array(
+                        "a" => [9, 10, 11],
+12 => new \Exception(\'Ellow\')
+                    );
+                ',
+                array(2 => array(true, true, false)),
+            ),
+            // Windows/Max EOL testing
+            array(
+                "<?php\r\narray('a' => 13);\r\n",
+                array(1 => array(true, false, false)),
+            ),
+            array(
+                "<?php\r\n   array(\r\n       'a' => 14,\r\n       'b' =>  15\r\n   );\r\n",
+                array(2 => array(true, true, false)),
+            ),
+        );
+
+        return $cases;
+    }
 }

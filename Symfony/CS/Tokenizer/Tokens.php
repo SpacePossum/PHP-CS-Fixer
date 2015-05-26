@@ -896,10 +896,14 @@ class Tokens extends \SplFixedArray
             $index = $this->getNextMeaningfulToken($index);
         }
 
-        $endIndex = $this[$index]->equals('(')
-            ? $this->findBlockEnd(self::BLOCK_TYPE_PARENTHESIS_BRACE, $index)
-            : $this->findBlockEnd(self::BLOCK_TYPE_SQUARE_BRACE, $index)
-        ;
+        try {
+            $endIndex = $this[$index]->equals('(')
+                ? $this->findBlockEnd(self::BLOCK_TYPE_PARENTHESIS_BRACE, $index)
+                : $this->findBlockEnd(self::BLOCK_TYPE_SQUARE_BRACE, $index)
+            ;
+        } catch (\InvalidArgumentException $e) {
+            return false;
+        }
 
         for (++$index; $index < $endIndex; ++$index) {
             $token = $this[$index];
