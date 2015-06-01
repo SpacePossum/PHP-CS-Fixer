@@ -67,6 +67,9 @@ EOT;
 ",
             ),
             array(
+                "<?php\n\$string = 'x  \ny';\necho (strlen(\$string) === 5);",
+            ),
+            array(
                 "<?php\necho <<<'EOT'\nInline Il y eut un   \r\nrire éclatant    \n     \n   \r\nEOT;\n\n",
             ),
         );
