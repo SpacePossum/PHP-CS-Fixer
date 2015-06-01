@@ -48,13 +48,21 @@ $b = 1;',
 $b = 1;		',
             ),
             array(
-                '<?php
-$b = 1;',
-                '<?php
-$b = 1;   	   ',
+                "<?php \$b = 1;\n  ",
+                "<?php \$b = 1;		\n  ",
             ),
             array(
-                "<?php\n      \n	\n\$b = 1;",
+                "<?php \$b = 1;\n\$c = 1;",
+                "<?php \$b = 1;   	   \n\$c = 1;",
+            ),
+            array(
+                "<?php\necho 1;\n   \necho2;",
+            ),
+            array(
+                "<?php\n\$a=1;\n      \n\t\n\$b = 1;",
+            ),
+            array(
+                "<?php\necho 1;\n?>\n\n\n\n",
             ),
             array(
                 "<?php
@@ -65,6 +73,9 @@ la main, la laisser par terre ou la mettre sur sa tête. Il se
 rassit et la posa sur ses genoux.
 EOT;
 ",
+            ),
+            array(
+                "<?php\n\$string = 'x  \ny';\necho (strlen(\$string) === 5);",
             ),
             array(
                 "<?php\necho <<<'EOT'\nInline Il y eut un   \r\nrire éclatant    \n     \n   \r\nEOT;\n\n",
