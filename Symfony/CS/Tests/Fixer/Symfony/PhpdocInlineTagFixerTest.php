@@ -32,6 +32,7 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     /**
+     * {link} { link }
      * { test }
      * {@inheritdoc test}
      * test other comment
@@ -46,6 +47,7 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
 ',
                 '<?php
     /**
+     * {link} { link }
      * { test }
      * {@inheritdoc test}
      * test other comment
@@ -126,14 +128,14 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
     /**
      * {@inheritdoc} should this be inside the tag?
      * {@inheritdoc}
-     *
+     * inheritdoc
      */
 ',
                 '<?php
     /**
      * @inheritdoc should this be inside the tag?
      * @inheritdoc
-     *
+     * inheritdoc
      */
 ',           ),
         );
