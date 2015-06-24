@@ -32,7 +32,7 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
             array(
                 '<?php
     /**
-     * {link} { link }
+     * {link} { LINK }
      * { test }
      * {@inheritdoc test}
      * test other comment
@@ -47,9 +47,9 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
 ',
                 '<?php
     /**
-     * {link} { link }
+     * {link} { LINK }
      * { test }
-     * {@inheritdoc test}
+     * {@inheritDoc test }
      * test other comment
      * @{inheritdoc test} a
      * {{@inheritdoc test}} b
@@ -130,13 +130,13 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
         $cases[] = array(
             '<?php
     /**
-     * Typo {@inheritdoc} {@source } {@tutorial } {links}
+     * Typo {@inheritdoc} {@example} {@id} {@source} {@tutorial} {links}
      * inheritdocs
      */
 ',
             '<?php
     /**
-     * Typo {@inheritdocs} { @sources } {{{ @tutorials }} {links}
+     * Typo {@inheritdocs} {@example} { @ids} { @sources } {{{ @tutorials }} {links}
      * inheritdocs
      */
 ',
@@ -161,6 +161,7 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
     /**
      * {@inheritdoc} should this be inside the tag?
      * {@inheritdoc}
+     * {@inheritdoc}
      * inheritdoc
      */
 ',
@@ -169,6 +170,7 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
     /**
      * @inheritdoc should this be inside the tag?
      * @inheritdoc
+     * @inheritdocs
      * inheritdoc
      */
 ',

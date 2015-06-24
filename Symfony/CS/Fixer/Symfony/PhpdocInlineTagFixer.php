@@ -39,19 +39,32 @@ final class PhpdocInlineTagFixer extends AbstractFixer
 
             $content = $token->getContent();
 
-            // move `@` inside tag, for example @{tag} -> {@tag}, replace multiple '{'/'}',
+            // Move `@` inside tag, for example @{tag} -> {@tag}, replace multiple '{'/'}',
             // remove spaces between '{' and '@', remove 's' at the end of tag word
             $content = preg_replace(
-                '#(@+[{]+|[{]+[ ]*@+)[ ]*(example|id|internal|inheritdoc|link|source|toc|tutorial)[s]*([^}]*)([}]*)#',
+                '#(@+[{]+|[{]+[ ]*@+)[ ]*(example|id|internal|inheritdoc|link|source|toc|tutorial)[s]*([^}]*)([}]*)#i',
                 '{@$2$3}',
                 $content
             );
 
-            // always make inheritdoc inline using with '{' '}' when needed
+            // always make inheritdoc inline using with '{' '}' when needed, remove trailing 's',
+            // make sure lowercase.
             $content = preg_replace(
-                '#([^{])@(inheritdoc)([^}])#',
-                '$1{@$2}$3',
-                $content);
+                '#([^{])@(inheritdoc)[s]*([^}])#i',
+                '$1{@inheritdoc}$3',
+                $content
+            );
+
+            // At this point, all tags that are fixable by this fixer are in the format
+            // '{@(tag name)[ ]*}'. Make sure the tags are written in lower case, remove
+            // white space between end of tag text and '}'
+            $content = preg_replace_callback(
+                '#{@(example|id|internal|inheritdoc|link|source|toc|tutorial)([^}]*)([}]*)#i',
+                function (array $matches) {
+                    return '{@'.strtolower($matches[1]).rtrim($matches[2]).'}';
+                },
+                $content
+            );
 
             $token->setContent($content);
         }
