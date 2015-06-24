@@ -55,7 +55,7 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
      * {{@inheritdoc test}} b
      * {@ inheritdoc test} c
      * { @inheritdoc foo bar.} d
-     * {@ inheritdoc foo bar.} e
+     * {@ 	inheritdoc foo bar.} e
      * @{{inheritdoc test}} f
      * end comment {@inheritdoc here we are done} @spacepossum {1}
      */
