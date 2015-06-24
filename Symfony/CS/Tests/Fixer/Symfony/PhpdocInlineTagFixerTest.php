@@ -80,6 +80,23 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
                 sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
                 sprintf("<?php\n     /**\n      * c @{{%s test}}\n      */\n", $tag),
             );
+            // test unbalanced { tags
+            $cases[] = array(
+                sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
+                sprintf("<?php\n     /**\n      * c {@%s test}}\n      */\n", $tag),
+            );
+            $cases[] = array(
+                sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
+                sprintf("<?php\n     /**\n      * c {{@%s test}\n      */\n", $tag),
+            );
+            $cases[] = array(
+                sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
+                sprintf("<?php\n     /**\n      * c {@%s test}}\n      */\n", $tag),
+            );
+            $cases[] = array(
+                sprintf("<?php\n     /**\n      * c {@%s test}\n      */\n", $tag),
+                sprintf("<?php\n     /**\n      * c @{{%s test}}}\n      */\n", $tag),
+            );
         }
 
         // don't touch custom tags
