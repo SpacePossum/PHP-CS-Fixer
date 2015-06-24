@@ -126,6 +126,22 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
             );
         }
 
+        // common typos
+        $cases[] = array(
+            '<?php
+    /**
+     * Typo {@inheritdoc} {@source } {@tutorial } {links}
+     * inheritdocs
+     */
+',
+            '<?php
+    /**
+     * Typo {@inheritdocs} { @sources } {{{ @tutorials }} {links}
+     * inheritdocs
+     */
+',
+        );
+
         return $cases;
     }
 
@@ -148,13 +164,15 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
      * inheritdoc
      */
 ',
+                // missing { } test for inheritdoc
                 '<?php
     /**
      * @inheritdoc should this be inside the tag?
      * @inheritdoc
      * inheritdoc
      */
-',           ),
+',
+                ),
         );
     }
 }

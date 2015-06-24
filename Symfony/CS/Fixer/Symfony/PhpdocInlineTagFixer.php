@@ -40,9 +40,9 @@ final class PhpdocInlineTagFixer extends AbstractFixer
             $content = $token->getContent();
 
             // move `@` inside tag, for example @{tag} -> {@tag}, replace multiple '{'/'}',
-            // remove spaces between '{' and '@'
+            // remove spaces between '{' and '@', remove 's' at the end of tag word
             $content = preg_replace(
-                '#(@+[{]+|[{]+[ ]*@+)[ ]*(example|id|internal|inheritdoc|link|source|toc|tutorial)([^}]*)([}]*)#',
+                '#(@+[{]+|[{]+[ ]*@+)[ ]*(example|id|internal|inheritdoc|link|source|toc|tutorial)[s]*([^}]*)([}]*)#',
                 '{@$2$3}',
                 $content
             );
