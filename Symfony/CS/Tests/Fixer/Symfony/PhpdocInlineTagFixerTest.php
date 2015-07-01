@@ -52,10 +52,10 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
      * {@inheritDoc test }
      * test other comment
      * @{inheritdoc test} a
-     * {{@inheritdoc test}} b
-     * {@ inheritdoc test} c
-     * { @inheritdoc foo bar.} d
-     * {@ 	inheritdoc foo bar.} e
+     * {{@inheritdoc    test}} b
+     * {@ inheritdoc   test} c
+     * { @inheritdoc 	foo bar.  } d
+     * {@ 	inheritdoc foo bar.	} e
      * @{{inheritdoc test}} f
      * end comment {@inheritdoc here we are done} @spacepossum {1}
      */
@@ -136,7 +136,7 @@ class PhpdocInlineTagFixerTest extends AbstractFixerTestBase
 ',
             '<?php
     /**
-     * Typo {@inheritdocs} {@example} { @ids} { @sources } {{{ @tutorials }} {links}
+     * Typo {@inheritdocs} {@exampleS} { @ids} { @sources } {{{ @tutorials }} {links}
      * inheritdocs
      */
 ',

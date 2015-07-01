@@ -39,30 +39,27 @@ final class PhpdocInlineTagFixer extends AbstractFixer
 
             $content = $token->getContent();
 
-            // Move `@` inside tag, for example @{tag} -> {@tag}, replace multiple '{'/'}',
-            // remove spaces between '{' and '@', remove 's' at the end of tag word
-            $content = preg_replace(
-                '#(@+[{]+|[{]+[ \t]*@+)[ \t]*(example|id|internal|inheritdoc|link|source|toc|tutorial)[s]*([^}]*)([}]*)#i',
-                '{@$2$3}',
+            // Move `@` inside tag, for example @{tag} -> {@tag}, replace multiple curly brackets,
+            // remove spaces between '{' and '@', remove 's' at the end of tag.
+            // Make sure the tags are written in lower case, remove white space between end
+            // of text and closing bracket and between the tag and inline comment.
+            $content = preg_replace_callback(
+                '#(@{+|{+[ \t]*@)[ \t]*(example|id|internal|inheritdoc|link|source|toc|tutorial)s*([^}]*)(}*)#iu',
+                function (array $matches) {
+                    $doc = trim($matches[3]);
+                    if ('' === $doc) {
+                        return '{@'.strtolower($matches[2]).'}';
+                    }
+                    return '{@'.strtolower($matches[2]).' '.$doc.'}';
+                },
                 $content
             );
 
-            // always make inheritdoc inline using with '{' '}' when needed, remove trailing 's',
+            // Always make inheritdoc inline using with '{' '}' when needed, remove trailing 's',
             // make sure lowercase.
             $content = preg_replace(
-                '#([^{])@inheritdoc[s]*([^}])#i',
+                '#([^{])@inheritdoc[s]*([^}])#iu',
                 '$1{@inheritdoc}$2',
-                $content
-            );
-
-            // At this point, all tags that are fixable by this fixer are in the format
-            // '{@(tag name)[ ]*}'. Make sure the tags are written in lower case, remove
-            // white space between end of tag text and '}'
-            $content = preg_replace_callback(
-                '#{@(example|id|internal|inheritdoc|link|source|toc|tutorial)([^}]*)([}]*)#i',
-                function (array $matches) {
-                    return '{@'.strtolower($matches[1]).rtrim($matches[2]).'}';
-                },
                 $content
             );
 
