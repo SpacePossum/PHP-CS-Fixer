@@ -50,6 +50,7 @@ final class PhpdocInlineTagFixer extends AbstractFixer
                     if ('' === $doc) {
                         return '{@'.strtolower($matches[2]).'}';
                     }
+
                     return '{@'.strtolower($matches[2]).' '.$doc.'}';
                 },
                 $content
