@@ -383,7 +383,7 @@ class Tokens extends \SplFixedArray
      * Find tokens of given kind.
      *
      * @param int|array $possibleKind kind or array of kind
-     * @param int|null  $start        optional offset
+     * @param int       $start        optional offset
      * @param int|null  $end          optional limit
      *
      * @return array array of tokens of given kinds or assoc array of arrays
