@@ -13,7 +13,6 @@ namespace Symfony\CS\Tests\Fixer\PSR2;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
-
 /**
  * @internal
  */
@@ -29,7 +28,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestBase
 
     public function provideCases()
     {
-        return array(
+        $cases = array(
             array(
                 '<?php
 interface Test extends /*a*/ /*b*/
@@ -122,5 +121,27 @@ extends
 \Exception {}',
             ),
         );
+
+        if (PHP_VERSION_ID >= 50400) {
+            $cases[] = array(
+                '<?php
+trait traitTest
+{}
+
+trait /**/ traitTest2 //
+/**/
+{}',
+                '<?php
+trait
+   traitTest
+
+   {}
+
+trait/**/traitTest2//
+/**/{}',
+            );
+        }
+
+        return $cases;
     }
 }

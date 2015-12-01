@@ -47,12 +47,12 @@ final class ClassDefinitionFixer extends AbstractFixer
     private function fixClassDefinition(Tokens $tokens, $start, $end)
     {
         // check if there is a `implements` part in the definition, since there are rules for it in PSR 2.
-        $implementsInfo = $this->detectImplements($tokens, $start, $end);
+        $implementsInfo = $this->getMultiLineInfo($tokens, $start, $end);
 
         // 4.1 The extends and implements keywords MUST be declared on the same line as the class name.
         if ($implementsInfo['numberOfInterfaces'] > 1 && $implementsInfo['multiLine']) {
-            $end += $this->ensureWhiteSpaceSeparation($tokens, $start, $implementsInfo['implementsAt']);
-            $end += $this->fixMultiLineImplements($tokens, $implementsInfo['implementsAt'], $end);
+            $end += $this->ensureWhiteSpaceSeparation($tokens, $start, $implementsInfo['breakAt']);
+            $end += $this->fixMultiLineImplements($tokens, $implementsInfo['breakAt'], $end);
         } else {
             $end += $this->ensureWhiteSpaceSeparation($tokens, $start, $end);
         }
@@ -68,18 +68,18 @@ final class ClassDefinitionFixer extends AbstractFixer
      * When doing so, the first item in the list MUST be on the next line, and there MUST be only one interface per line.
      *
      * @param Tokens $tokens
-     * @param int    $implementsAt
+     * @param int    $breakAt
      * @param int    $end
      *
      * @return int number tokens inserted by the method before the end token
      */
-    private function fixMultiLineImplements(Tokens $tokens, $implementsAt, $end)
+    private function fixMultiLineImplements(Tokens $tokens, $breakAt, $end)
     {
         $added = 0;
         // implements should be followed by a line break, but we allow a comments before that,
         // the lines after 'implements' are always build up as (comment|whitespace)*T_STRING{1}(comment|whitespace)*','
         // after fixing it must be (whitespace indent)(comment)*T_STRING{1}(comment)*','
-        for ($c = $end - 1; $c > $implementsAt - 1; --$c) {
+        for ($c = $end - 1; $c > $breakAt - 1; --$c) {
             if ($tokens[$c]->isWhitespace()) {
                 if ($tokens[$c + 1]->equals(',')) {
                     $tokens[$c]->clear();
@@ -175,7 +175,7 @@ final class ClassDefinitionFixer extends AbstractFixer
      * Returns an array with `implements` data.
      *
      * Returns array:
-     * int  'implementsAt'       index of the Token of type T_IMPLEMENTS for the definition, or 0
+     * int  'breakAt'       index of the Token of type T_IMPLEMENTS for the definition, or 0
      * int  'numberOfInterfaces'
      * bool 'multiLine'
      *
@@ -185,16 +185,16 @@ final class ClassDefinitionFixer extends AbstractFixer
      *
      * @return array
      */
-    private function detectImplements(Tokens $tokens, $start, $end)
+    private function getMultiLineInfo(Tokens $tokens, $start, $end)
     {
-        $implementsInfo = array('implementsAt' => 0, 'numberOfInterfaces' => 0, 'multiLine' => false);
-        $implements = $tokens->findGivenKind(T_IMPLEMENTS, $start, $end);
+        $implementsInfo = array('breakAt' => 0, 'numberOfInterfaces' => 0, 'multiLine' => false);
+        $implements = $tokens->findGivenKind($tokens[$start]->isGivenKind(T_INTERFACE) ? T_EXTENDS : T_IMPLEMENTS, $start, $end);
         if (count($implements) < 1) {
             return $implementsInfo;
         }
 
-        $implementsInfo['implementsAt'] = key($implements);
-        for ($j = $implementsInfo['implementsAt'] + 1; $j < $end; ++$j) {
+        $implementsInfo['breakAt'] = key($implements);
+        for ($j = $implementsInfo['breakAt'] + 1; $j < $end; ++$j) {
             if ($tokens[$j]->isGivenKind(T_STRING)) {
                 ++$implementsInfo['numberOfInterfaces'];
                 continue;
