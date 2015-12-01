@@ -120,9 +120,55 @@ Test124
 extends
 \Exception {}',
             ),
+            array(
+                '<?php
+class Aaa implements Bbb, Ccc
+{
+}',
+            ),
+array(
+                '<?php
+    class Aaa implements Bbb, Ccc
+    {
+    }',
+            ),
+            array(
+                '<?php
+class Aaa implements \Bbb, Ccc
+{
+}',
+            ),
+            array(
+                '<?php
+class Aaa implements Bbb, \Ccc
+{
+}',
+            ),
+            array(
+                '<?php
+class Aaa implements \Bbb, \Ccc
+{
+}',
+            ),
+            array(
+                '<?php
+if (1) {
+    class IndentedClass
+    {
+    }
+}',
+            ),
+            array(
+                '<?php
+namespace {
+    class IndentedNamespacedClass
+    {
+    }
+}',
+            ),
         );
 
-        if (PHP_VERSION_ID >= 50400) {
+        if (defined('T_TRAIT')) {
             $cases[] = array(
                 '<?php
 trait traitTest
