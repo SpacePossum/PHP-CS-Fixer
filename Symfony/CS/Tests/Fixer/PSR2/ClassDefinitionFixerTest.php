@@ -13,6 +13,7 @@ namespace Symfony\CS\Tests\Fixer\PSR2;
 
 use Symfony\CS\Tests\Fixer\AbstractFixerTestBase;
 
+
 /**
  * @internal
  */
@@ -31,7 +32,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestBase
         return array(
             array(
                 '<?php
-interface Test extends TestInterface8 implements /*a*/ /*b*/
+interface Test extends /*a*/ /*b*/
     TestInterface1, /* test */
     TestInterface2, // test
  // test
@@ -43,6 +44,31 @@ interface Test extends TestInterface8 implements /*a*/ /*b*/
 }',
                 '<?php
 interface Test
+extends
+  /*a*/    /*b*/TestInterface1   ,  /* test */
+    TestInterface2   ,   // test
+    '.'
+
+// test
+TestInterface3, /**/     TestInterface4   ,
+      TestInterface5    ,    '.'
+        /**/TestInterface6 {
+}',
+            ),
+            array(
+                '<?php
+class Test extends TestInterface8 implements /*a*/ /*b*/
+    TestInterface1, /* test */
+    TestInterface2, // test
+ // test
+    TestInterface3, /**/
+    TestInterface4,
+    TestInterface5, /**/
+    TestInterface6
+{
+}',
+                '<?php
+class Test
 extends
     TestInterface8
   implements  /*a*/    /*b*/TestInterface1   ,  /* test */
