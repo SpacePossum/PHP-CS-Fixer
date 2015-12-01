@@ -28,7 +28,7 @@ final class ClassDefinitionFixer extends AbstractFixer
     public function fix(\SplFileInfo $file, $content)
     {
         $tokens = Tokens::fromCode($content);
-        for ($index = $tokens->getSize() - 1; $index > 0;--$index) {
+        for ($index = $tokens->getSize() - 1; $index > 0; --$index) {
             if (!$tokens[$index]->isClassy()) {
                 continue;
             }
@@ -83,7 +83,7 @@ final class ClassDefinitionFixer extends AbstractFixer
             if ($tokens[$c]->isWhitespace()) {
                 if ($tokens[$c + 1]->equals(',')) {
                     $tokens[$c]->clear();
-                } elseif ($tokens[$c + 1]->isComment() && !$tokens[$c]->equals(' ')) {
+                } elseif ($tokens[$c + 1]->isComment() && ' ' !== $tokens[$c]->getContent() ) {
                     $tokens[$c]->setContent(' ');
                 }
             }
@@ -151,7 +151,8 @@ final class ClassDefinitionFixer extends AbstractFixer
         $insertCount = 0;
         for ($i = $end; $i > $start; --$i) {
             if ($tokens[$i]->isWhitespace()) {
-                if (!$tokens[$i]->equals(' ')) {
+                if (' ' !== $tokens[$i]->getContent())
+                {
                     $tokens[$i]->setContent(' ');
                 }
                 continue;

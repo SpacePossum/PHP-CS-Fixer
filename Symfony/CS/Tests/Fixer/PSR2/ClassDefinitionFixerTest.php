@@ -34,6 +34,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestBase
 interface Test extends TestInterface8 implements /*a*/ /*b*/
     TestInterface1, /* test */
     TestInterface2, // test
+ // test
     TestInterface3, /**/
     TestInterface4,
     TestInterface5, /**/
@@ -48,7 +49,8 @@ extends
     TestInterface2   ,   // test
     '.'
 
-     TestInterface3, /**/     TestInterface4   ,
+// test
+TestInterface3, /**/     TestInterface4   ,
       TestInterface5    ,    '.'
         /**/TestInterface6 {
 }',
