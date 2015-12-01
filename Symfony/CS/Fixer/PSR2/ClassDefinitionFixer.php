@@ -83,7 +83,7 @@ final class ClassDefinitionFixer extends AbstractFixer
             if ($tokens[$c]->isWhitespace()) {
                 if ($tokens[$c + 1]->equals(',')) {
                     $tokens[$c]->clear();
-                } elseif ($tokens[$c + 1]->isComment() && ' ' !== $tokens[$c]->getContent() ) {
+                } elseif ($tokens[$c + 1]->isComment() && ' ' !== $tokens[$c]->getContent()) {
                     $tokens[$c]->setContent(' ');
                 }
             }
@@ -151,8 +151,7 @@ final class ClassDefinitionFixer extends AbstractFixer
         $insertCount = 0;
         for ($i = $end; $i > $start; --$i) {
             if ($tokens[$i]->isWhitespace()) {
-                if (' ' !== $tokens[$i]->getContent())
-                {
+                if (' ' !== $tokens[$i]->getContent()) {
                     $tokens[$i]->setContent(' ');
                 }
                 continue;
