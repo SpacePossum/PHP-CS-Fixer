@@ -3,18 +3,18 @@ Integration of fixers: empty_return,useless_return,
 --CONFIG--
 level=none
 fixers=empty_return,useless_return
---INPUT--
-<?php
-class Test {
-    private static function a($a) {
-        return null;//
-    }
-}
-
 --EXPECT--
 <?php
 class Test {
     private static function a($a) {
         //
+    }
+}
+
+--INPUT--
+<?php
+class Test {
+    private static function a($a) {
+        return null;//
     }
 }
