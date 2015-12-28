@@ -145,6 +145,20 @@ final class UselessReturnFixerTest extends AbstractFixerTestBase
             return;}
     }',
             ),
+            array(
+                '<?php
+    interface FooInterface
+    {
+        public function fnc();
+    }',
+            ),
+            array(
+                '<?php
+    abstract class AbstractFoo
+    {
+        abstract public function fnc();
+    }',
+            ),
         );
     }
 }
