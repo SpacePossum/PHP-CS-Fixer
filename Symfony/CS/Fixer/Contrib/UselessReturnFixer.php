@@ -31,19 +31,9 @@ final class UselessReturnFixer extends AbstractFixer
                 continue;
             }
 
-            $argumentListEnd = $tokens->getNextTokenOfKind($index, array(')'));
-            $index = $tokens->getNextMeaningfulToken($argumentListEnd);
+            $index = $tokens->getNextTokenOfKind($index, array(';', '{'));
             if ($tokens[$index]->equals('{')) {
-                // function / method, not abstract, not part of an interface definition, not lambda with use
                 $this->fixFunction($tokens, $index, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index));
-                continue;
-            }
-
-            if ($tokens[$index]->isGivenKind(T_USE)) {
-                // lambda with use
-                $index = $tokens->getNextTokenOfKind($index, array('{'));
-                $this->fixFunction($tokens, $index, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index));
-                continue;
             }
         }
 
