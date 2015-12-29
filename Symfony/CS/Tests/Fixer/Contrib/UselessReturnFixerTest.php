@@ -67,6 +67,16 @@ final class UselessReturnFixerTest extends AbstractFixerTestBase
             $c1();
             '.'
         }
+
+        private function test()
+        {
+            $d = function(){
+                echo 123;
+                '.'
+            };
+
+            $d();
+        }
     }',
                 '<?php
     class Test2
@@ -87,6 +97,16 @@ final class UselessReturnFixerTest extends AbstractFixerTestBase
             $c1();
             return
             ;
+        }
+
+        private function test()
+        {
+            $d = function(){
+                echo 123;
+                return;
+            };
+
+            $d();
         }
     }',
             ),
@@ -157,6 +177,18 @@ final class UselessReturnFixerTest extends AbstractFixerTestBase
     abstract class AbstractFoo
     {
         abstract public function fnc();
+    }',
+            ),
+            array(
+                '<?php
+    abstract class AbstractFoo
+    {
+        abstract public function fnc();
+        abstract public function fnc1();
+        static private function fn2(){}
+        public function fnc3() {
+            echo 1 . self::fn2();//{}
+        }
     }',
             ),
         );
