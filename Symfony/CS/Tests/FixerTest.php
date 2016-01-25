@@ -221,6 +221,12 @@ class FixerTest extends \PHPUnit_Framework_TestCase
             array($fixers['phpdoc_no_access'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_access,no_empty_phpdoc.test
             array($fixers['phpdoc_no_empty_return'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_empty_return,no_empty_phpdoc.test
             array($fixers['phpdoc_no_package'], $fixers['no_empty_phpdoc']), // tested also in: phpdoc_no_package,no_empty_phpdoc.test
+            array($fixers['duplicate_semicolon'], $fixers['no_useless_else']), // tested also in: duplicate_semicolon,no_useless_else.test
+            array($fixers['no_useless_else'], $fixers['extra_empty_lines']), // tested also in: no_useless_else,extra_empty_lines.test
+            array($fixers['no_useless_else'], $fixers['braces']),
+            array($fixers['no_useless_else'], $fixers['no_useless_return']), // tested also in: no_useless_else,no_useless_return.test
+            array($fixers['no_useless_else'], $fixers['trailing_spaces']), // tested also in: no_useless_else,trailing_spaces.test
+            array($fixers['no_useless_else'], $fixers['whitespacy_lines']), // tested also in: no_useless_else,whitespacy_lines.test
         );
 
         $docFixerNames = array_filter(

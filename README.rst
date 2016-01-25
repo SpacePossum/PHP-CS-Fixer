@@ -657,6 +657,10 @@ Choose from the list of available fixers:
                         before a namespace
                         declaration.
 
+* **no_useless_else** [contrib]
+                        There should not be useless
+                        else cases.
+
 * **no_useless_return** [contrib]
                         There should not be an empty
                         return statement at the end of

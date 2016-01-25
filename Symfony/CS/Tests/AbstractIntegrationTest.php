@@ -180,7 +180,8 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
             throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
         }
 
-        $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), $case->getFixers(), false, true, new FileCacheManager(false, null, $case->getFixers()));
+        $fixers = $case->getFixers();
+        $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), $case->getFixers(), false, true, new FileCacheManager(false, null, $fixers));
         $this->assertTrue($errorsManager->isEmpty(), 'Errors reported during fixing.');
 
         if (!$case->hasInputCode()) {
@@ -198,7 +199,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $this->assertNotEmpty($changed, sprintf('Expected changes made to test "%s" in "%s".', $case->getTitle(), $case->getFileName()));
+        $this->assertNotEmpty($changed, sprintf('Expected changes made to test "%s" in "%s" by "%s".', $case->getTitle(), $case->getFileName(), implode(',', $this->getFixerNames($fixers))));
         $fixedInputCode = file_get_contents($tmpFile);
         $this->assertSame($expected, $fixedInputCode, sprintf('Expected changes do not match result for "%s" in "%s".', $case->getTitle(), $case->getFileName()));
 
@@ -217,7 +218,7 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
                 throw new IOException(sprintf('Failed to write to tmp. file "%s".', $tmpFile));
             }
 
-            $changed = $fixer->fixFile(new \SplFileInfo($tmpFile), array_reverse($case->getFixers()), false, true, new FileCacheManager(false, null, $case->getFixers()));
+            $fixer->fixFile(new \SplFileInfo($tmpFile), array_reverse($fixers), false, true, new FileCacheManager(false, null, $fixers));
             $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
             $this->assertNotSame($fixedInputCode, $fixedInputCodeWithReversedFixers, 'Set priorities must be significant. If fixers used in reverse order return same output then the integration test is not sufficient or the priority relation between used fixers should not be set.');
         }
@@ -259,5 +260,20 @@ abstract class AbstractIntegrationTest extends \PHPUnit_Framework_TestCase
     protected function isLintException($source)
     {
         return false;
+    }
+
+    /**
+     * @param FixerInterface[] $fixers
+     *
+     * @return array
+     */
+    private function getFixerNames(array $fixers)
+    {
+        $names = array();
+        foreach ($fixers as $fixer) {
+            $names[] = $fixer->getName();
+        }
+
+        return $names;
     }
 }

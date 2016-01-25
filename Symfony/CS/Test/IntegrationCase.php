@@ -124,6 +124,11 @@ final class IntegrationCase
         return $this;
     }
 
+    /**
+     * @param FixerInterface[] $fixers
+     *
+     * @return $this
+     */
     public function setFixers(array $fixers)
     {
         $this->fixers = $fixers;
