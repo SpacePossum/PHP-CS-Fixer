@@ -446,6 +446,23 @@ EOF;
         $this->doTest($expected, $input);
     }
 
+    public function testFixCurlyBraceFixer()
+    {
+        $this->getFixer()->configure(array('curly_brace_open'));
+
+        $expected = <<<'EOF'
+<?php
+function foo(array $array)
+{
+    $this->ifPart = function ($v) use ($array) { return in_array($v, $array, true); };
+
+    return $this;
+}
+EOF;
+
+        $this->doTest($expected);
+    }
+
     public function testFixWithComments2()
     {
         $input = "<?php\n\\\\a\n\n\n\n\$a =1;";
