@@ -1439,7 +1439,7 @@ class Tokens extends \SplFixedArray
 
         if ($this[$from]->isWhitespace()) {
             $this[$from]->setContent($this[$from]->getContent().$this[$till]->getContent());
-        } elseif ($this[$from + 1]->isEmpty('')) {
+        } elseif ($this[$from + 1]->isEmpty()) {
             $this[$from + 1]->override(array(T_WHITESPACE, $this[$till]->getContent(), $this[$from + 1]->getLine()));
         }
 
