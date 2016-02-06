@@ -192,20 +192,20 @@ final class UselessReturnFixerTest extends AbstractFixerTestBase
             ),
             array(
                 '<?php
-                function() {
+                $a = function() {
                        /**/
                      '.'
            /* a */   //
                     '.'
-                }
+                };
                 ',
                 '<?php
-                function() {
+                $a = function() {
                     return  ; /**/
                     return ;
            /* a */  return; //
                     return;
-                }
+                };
                 ',
             ),
         );
