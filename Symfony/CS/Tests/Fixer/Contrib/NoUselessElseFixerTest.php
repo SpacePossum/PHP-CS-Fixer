@@ -559,9 +559,29 @@ else?><?php echo 5;',
             ),
             array(
                 '<?php
+                    if ($a) {
+                        if ($b) return;
+                    } else {
+                        echo 1;
+                    }
+                ',
+            ),
+            array(
+                '<?php
                     $a = true; // 6
                     if (true === $a)
                         $b = true === $a ? 1 : die;
+                    else
+                        echo 4;
+
+                    echo "end";
+                ',
+            ),
+            array(
+                '<?php
+                    $a = true; // 6
+                    if (true === $a)
+                        $b = true === $a ? 1 : exit(1);
                     else
                         echo 4;
 
