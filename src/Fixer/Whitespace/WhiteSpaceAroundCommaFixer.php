@@ -42,8 +42,6 @@ final class WhiteSpaceAroundCommaFixer extends AbstractFixer
             $index = $this->moveComma($tokens, $index);
             $this->fixWhiteSpaceAfterComma($tokens, $index);
         }
-
-        //echo $tokens->generateCode();die;
     }
 
     /**
@@ -59,10 +57,9 @@ final class WhiteSpaceAroundCommaFixer extends AbstractFixer
      */
     public function getPriority()
     {
-        // FIXME
-        // after  : empty comment, list_commas, multiline_array_trailing_comma, no_trailing_comma_in_list_call, single_array_no_trailing_comma
-        // before : trailing white space on line, extra empty line, white spacy line
-        return 0;
+        // after: no_empty_statement, no_trailing_comma_in_list_call, no_trailing_comma_in_singleline_array, trailing_comma_in_multiline_array
+        // before: no_extra_consecutive_blank_lines, no_trailing_whitespace, no_whitespace_in_blank_lines
+        return -1;
     }
 
     /**
@@ -74,7 +71,7 @@ final class WhiteSpaceAroundCommaFixer extends AbstractFixer
     private function moveComma(Tokens $tokens, $index)
     {
         $previousMeaningFul = $tokens->getPrevMeaningfulToken($index);
-        if ($previousMeaningFul === $index - 1 || $tokens[$previousMeaningFul]->isGivenKind(T_END_HEREDOC)) {
+        if ($previousMeaningFul === $index - 1 || $tokens[$previousMeaningFul]->equalsAny(array(array(T_END_HEREDOC), ','))) {
             return $index;
         }
 
@@ -90,7 +87,8 @@ final class WhiteSpaceAroundCommaFixer extends AbstractFixer
      */
     private function fixWhiteSpaceAfterComma(Tokens $tokens, $index)
     {
-        $notSpacedTypes = array(')', ']', ',');
+        static $notSpacedTypes = array(')', ']');
+
         if ($tokens[$index + 1]->equalsAny($notSpacedTypes)) {
             return;
         }

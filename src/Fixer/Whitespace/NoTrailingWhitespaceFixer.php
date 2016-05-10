@@ -76,6 +76,6 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
     public function getPriority()
     {
         // should be run after NoEmptyPhpdocFixerTest, UnneededControlParenthesesFixer, ClassDefinitionFixer, CombineConsecutiveUnsetsFixer and NoEmptyStatementFixer.
-        return 0;
+        return -15;
     }
 }

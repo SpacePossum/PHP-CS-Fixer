@@ -36,7 +36,12 @@ final class WhiteSpaceAroundCommaFixerTest extends AbstractFixerTestCase
         return array(
             array(
                 '<?php
-                    list($a,, $c, $d,) = foo();
+                    list($a, , $c, $d,) = foo();
+                ',
+            ),
+            array(
+                '<?php
+                    list($a, , $c, $d,) = foo();
                 ',
                 '<?php
                     list($a   , ,$c,$d  ,  ) = foo();
@@ -358,12 +363,12 @@ EOF
             ),
             // test receiving data in list context with omitted values
             array(
-                '<?php list($a, $b,,, $c) = foo();',
-                '<?php list($a, $b,, ,$c) = foo();',
+                '<?php list($a, $b, , , $c) = foo();',
+                '<?php list($a, $b, , ,$c) = foo();',
             ),
             // test receiving data in list context with omitted values and multiple spaces
             array(
-                '<?php list($a, $b,,, $c) = foo();',
+                '<?php list($a, $b, , , $c) = foo();',
                 '<?php list($a, $b,,    ,$c) = foo();',
             ),
             //inline comments with spaces
