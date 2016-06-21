@@ -769,7 +769,7 @@ Choose from the list of available fixers:
                          declared after the
                          visibility.
 
-* **white_space_around_comma** [@Symfony]
+* **whitespace_around_comma** [@Symfony]
                          Fix whitespace around ','.
 
 
