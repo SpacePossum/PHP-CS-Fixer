@@ -47,14 +47,14 @@ final class Error
     private $filePath;
 
     /**
-     * @var \Exception|\Error|\Throwable|null
+     * @var \Throwable|null
      */
     private $source;
 
     /**
-     * @param int                               $type
-     * @param string                            $filePath
-     * @param \Exception|\Error|\Throwable|null $source
+     * @param int             $type
+     * @param string          $filePath
+     * @param \Throwable|null $source
      */
     public function __construct($type, $filePath, $source = null)
     {
@@ -72,7 +72,7 @@ final class Error
     }
 
     /**
-     * @return \Exception|\Error|\Throwable|null
+     * @return \Throwable|null
      */
     public function getSource()
     {

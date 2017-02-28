@@ -250,8 +250,8 @@ final class Runner
     /**
      * Process an exception that occurred.
      *
-     * @param string                       $name
-     * @param \Exception|\Error|\Throwable $e
+     * @param string     $name
+     * @param \Throwable $e
      */
     private function processException($name, $e)
     {

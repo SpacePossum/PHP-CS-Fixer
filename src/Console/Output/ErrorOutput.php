@@ -57,18 +57,15 @@ final class ErrorOutput
             $this->output->writeln(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
             if ($showDetails && null !== $e = $error->getSource()) {
                 $this->output->writeln(array(
-                    '      <comment>Details</comment>',
-                    sprintf('      <comment>class</comment>    %s', $this->prepareOutput(get_class($e))),
-                    sprintf('      <comment>message</comment>  %s', $this->prepareOutput($e->getMessage())),
-                    sprintf('      <comment>code</comment>     %d', $e->getCode()),
-                    sprintf('      <comment>file</comment>     %s:%d', $this->prepareOutput($e->getFile()), $e->getLine()),
+                    '      '.($this->isDecorated ? '<bg=yellow;fg=black;>Details</>' : 'Details'),
+                    sprintf('      <comment>Class</comment>    %s', $this->prepareOutput(get_class($e))),
+                    sprintf('      <comment>Message</comment>  %s', $this->prepareOutput($e->getMessage())),
+                    sprintf('      <comment>Code</comment>     %d', $e->getCode()),
+                    sprintf('      <comment>File</comment>     %s:%d', $this->prepareOutput($e->getFile()), $e->getLine()),
                 ));
 
                 if ($showTrace && !$e instanceof LintingException) { // stack trace of lint exception is of no interest
-                    $this->output->writeln(array(
-                        '      -----------------------------',
-                        '      <comment>Trace</comment>',
-                    ));
+                    $this->output->writeln('      '.($this->isDecorated ? '<bg=yellow;fg=black;>Stack trace</>' : 'Stack trace'));
                     $stackTrace = $e->getTrace();
                     foreach ($stackTrace as $trace) {
                         $this->outputTrace($trace, '      ');
@@ -85,10 +82,17 @@ final class ErrorOutput
     private function outputTrace(array $trace, $indent)
     {
         if (isset($trace['file'])) {
-            $this->output->writeln(sprintf('%s<comment>File</comment>     %s:%d', $indent, $this->prepareOutput($trace['file']), $trace['line']));
-
-            if (isset($trace['function'])) {
-                $this->output->writeln(sprintf('%s<comment>Function</comment> %s', $indent, $this->prepareOutput($trace['function'])));
+            $this->output->writeln(sprintf('%s<comment>File</comment>      %s:%d', $indent, $this->prepareOutput($trace['file']), $trace['line']));
+            if (isset($trace['class'], $trace['function'], $trace['type'])) {
+                $this->output->writeln(sprintf(
+                    '%s<comment> Method</comment>   %s%s%s',
+                    $indent,
+                    $this->prepareOutput($trace['class']),
+                    $this->prepareOutput($trace['type']),
+                    $this->prepareOutput($trace['function'])
+                ));
+            } elseif (isset($trace['function'])) {
+                $this->output->writeln(sprintf('%s<comment> Function</comment> %s', $indent, $this->prepareOutput($trace['function'])));
             }
 
             return;
