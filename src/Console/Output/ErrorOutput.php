@@ -57,7 +57,7 @@ final class ErrorOutput
             $this->output->writeln(sprintf('%4d) %s', $i + 1, $error->getFilePath()));
             if ($showDetails && null !== $e = $error->getSource()) {
                 $this->output->writeln(array(
-                    '      '.($this->isDecorated ? '<bg=yellow;fg=black;>Details</>' : 'Details'),
+                    '      <bg=yellow;fg=black;>Details</>',
                     sprintf('      <comment>Class</comment>    %s', $this->prepareOutput(get_class($e))),
                     sprintf('      <comment>Message</comment>  %s', $this->prepareOutput($e->getMessage())),
                     sprintf('      <comment>Code</comment>     %d', $e->getCode()),
@@ -65,7 +65,7 @@ final class ErrorOutput
                 ));
 
                 if ($showTrace && !$e instanceof LintingException) { // stack trace of lint exception is of no interest
-                    $this->output->writeln('      '.($this->isDecorated ? '<bg=yellow;fg=black;>Stack trace</>' : 'Stack trace'));
+                    $this->output->writeln('      <bg=yellow;fg=black;>Stack trace</>');
                     $stackTrace = $e->getTrace();
                     foreach ($stackTrace as $trace) {
                         $this->outputTrace($trace, '      ');
