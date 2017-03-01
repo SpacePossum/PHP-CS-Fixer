@@ -83,24 +83,19 @@ final class ErrorOutput
     {
         if (isset($trace['file'])) {
             $this->output->writeln(sprintf('%s<comment>File</comment>      %s:%d', $indent, $this->prepareOutput($trace['file']), $trace['line']));
-            if (isset($trace['class'], $trace['function'], $trace['type'])) {
-                $this->output->writeln(sprintf(
-                    '%s<comment> Method</comment>   %s%s%s',
-                    $indent,
-                    $this->prepareOutput($trace['class']),
-                    $this->prepareOutput($trace['type']),
-                    $this->prepareOutput($trace['function'])
-                ));
-            } elseif (isset($trace['function'])) {
-                $this->output->writeln(sprintf('%s<comment> Function</comment> %s', $indent, $this->prepareOutput($trace['function'])));
-            }
-
-            return;
         }
 
-        $indent = '  '.$indent;
-        $this->output->writeln(sprintf('%s-----------------------------', $indent));
-        $this->outputTrace($trace, $indent);
+        if (isset($trace['class'], $trace['type'], $trace['function'])) {
+            $this->output->writeln(sprintf(
+                '%s<comment> Method</comment>   %s%s%s',
+                $indent,
+                $this->prepareOutput($trace['class']),
+                $this->prepareOutput($trace['type']),
+                $this->prepareOutput($trace['function'])
+            ));
+        } elseif (isset($trace['function'])) {
+            $this->output->writeln(sprintf('%s<comment> Function</comment> %s', $indent, $this->prepareOutput($trace['function'])));
+        }
     }
 
     /**
