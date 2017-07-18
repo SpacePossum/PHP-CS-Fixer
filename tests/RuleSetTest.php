@@ -34,9 +34,9 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @param string $ruleName
-     * @param mixed  $setName
-     * @param mixed  $ruleConfig
+     * @param string     $ruleName
+     * @param string     $setName
+     * @param bool|array $ruleConfig
      *
      * @dataProvider provideAllRulesFromSets
      */
