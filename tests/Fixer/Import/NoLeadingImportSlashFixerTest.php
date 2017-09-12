@@ -195,6 +195,24 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                 }
                 ',
             ),
+        );
+    }
+
+    /**
+     * @param string      $expected
+     * @param null|string $input
+     *
+     * @dataProvider provideFix54Cases
+     * @requires PHP 5.6
+     */
+    public function testFix56($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix56Cases()
+    {
+        return array(
             array(
                 '<?php
                     use function a\b;
