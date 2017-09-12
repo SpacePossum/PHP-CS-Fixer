@@ -59,6 +59,14 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
             ),
             array(
                 '<?php
+                use/*1*/A\B;
+                ',
+                '<?php
+                use/*1*/\A\B;
+                ',
+            ),
+            array(
+                '<?php
                 $a = function(\B\C $a) use ($b){
 
                 };
@@ -186,6 +194,54 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
                     use \Foo;
                 }
                 ',
+            ),
+            array(
+                '<?php
+                    use function a\b;
+                    use const d\e;
+                ',
+                '<?php
+                    use function \a\b;
+                    use const \d\e;
+                ',
+            ),
+        );
+    }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @dataProvider provideFix72Cases
+     * @requires PHP 7.2
+     */
+    public function testFix72($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix72Cases()
+    {
+        return array(
+            array(
+                '<?php
+namespace AAA;
+use some\a\{ClassA, ClassB, ClassC as C,};
+use function some\a\{fn_a, fn_b, fn_c,};
+use const some\a\{ConstA,ConstB,ConstC
+,
+};
+use const some\Z\{ConstA,ConstB,ConstC,};
+',
+                '<?php
+namespace AAA;
+use \some\a\{ClassA, ClassB, ClassC as C,};
+use function \some\a\{fn_a, fn_b, fn_c,};
+use const \some\a\{ConstA,ConstB,ConstC
+,
+};
+use const \some\Z\{ConstA,ConstB,ConstC,};
+',
             ),
         );
     }
