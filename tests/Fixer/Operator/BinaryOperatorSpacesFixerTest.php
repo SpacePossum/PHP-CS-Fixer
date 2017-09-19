@@ -821,7 +821,7 @@ $b;
     {
         $this->setExpectedExceptionRegExp(
             \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '/^\[binary_operator_spaces\] Unexpected "operators" key, expected any of ".*", got "integer#123"\.$/'
+            '/^\[binary_operator_spaces\] Invalid configuration: Unexpected "operators" key, expected any of ".*", got "integer#123"\.$/'
         );
 
         $this->fixer->configure(['operators' => [123 => 1]]);
@@ -831,7 +831,7 @@ $b;
     {
         $this->setExpectedExceptionRegExp(
             \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
-            '/^\[binary_operator_spaces\] Unexpected value for operator "\+", expected any of ".*", got "string#abc"\.$/'
+            '/^\[binary_operator_spaces\] Invalid configuration: Unexpected value for operator "\+", expected any of ".*", got "string#abc"\.$/'
         );
 
         $this->fixer->configure(['operators' => ['+' => 'abc']]);

@@ -24,6 +24,7 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -260,8 +261,6 @@ $h = $i===  $j;
      */
     protected function createConfigurationDefinition()
     {
-        $fixerName = $this->getName();
-
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('default', 'Default fix strategy.'))
                 ->setDefault(self::SINGLE_SPACE)
@@ -269,11 +268,10 @@ $h = $i===  $j;
                 ->getOption(),
             (new FixerOptionBuilder('operators', 'Dictionary of `binary operator` => `fix strategy` values that differ from the default strategy.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([function ($option) use ($fixerName) {
+                ->setAllowedValues([function ($option) {
                     foreach ($option as $operator => $value) {
                         if (!in_array($operator, self::$supportedOperators, true)) {
-                            throw new InvalidFixerConfigurationException(
-                                $fixerName,
+                            throw new InvalidOptionsException(
                                 sprintf(
                                     'Unexpected "operators" key, expected any of "%s", got "%s".',
                                     implode('", "', self::$supportedOperators),
@@ -283,8 +281,7 @@ $h = $i===  $j;
                         }
 
                         if (!in_array($value, self::$allowedValues, true)) {
-                            throw new InvalidFixerConfigurationException(
-                                $fixerName,
+                            throw new InvalidOptionsException(
                                 sprintf(
                                     'Unexpected value for operator "%s", expected any of "%s", got "%s".',
                                     $operator,
