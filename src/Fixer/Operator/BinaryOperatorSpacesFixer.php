@@ -717,20 +717,20 @@ $h = $i===  $j;
             }
 
             $lines = explode("\n", $tmpCode);
-            $groupIndex = [];
-            $blockSize = 0;
-            $groupIndex[$blockSize] = [];
+            $groups = [];
+            $groupIndex = 0;
+            $groups[$groupIndex] = [];
 
             foreach ($lines as $index => $line) {
                 if (substr_count($line, $placeholder) > 0) {
-                    $groupIndex[$blockSize][] = $index;
+                    $groups[$groupIndex][] = $index;
                 } else {
-                    ++$blockSize;
-                    $groupIndex[$blockSize] = [];
+                    ++$groupIndex;
+                    $groups[$groupIndex] = [];
                 }
             }
 
-            foreach ($groupIndex as $group) {
+            foreach ($groups as $group) {
                 if (count($group) < 1) {
                     continue;
                 }
