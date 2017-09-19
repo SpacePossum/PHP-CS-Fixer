@@ -714,7 +714,7 @@ $b;
 
     /**
      * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration: ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true]. Use configuration: ['operators' => ['=>' => 'single_space']] as replacement for ['align_double_arrow' => false].
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align', '=>' => 'single_space']] as replacement for ['align_equals' => true, 'align_double_arrow' => false].
      */
     public function testWrongConfigOldDeprecated()
     {
@@ -726,7 +726,7 @@ $b;
 
     /**
      * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration: ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true].
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true, 'align_double_arrow' => null].
      */
     public function testWrongConfigOldDeprecated2()
     {
@@ -738,7 +738,7 @@ $b;
 
     /**
      * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration: ['operators' => ['=>' => 'align']] as replacement for ['align_double_arrow' => true].
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=>' => 'align']] as replacement for ['align_equals' => null, 'align_double_arrow' => true].
      */
     public function testWrongConfigOldDeprecated3()
     {
@@ -750,7 +750,7 @@ $b;
 
     /**
      * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration: ['operators' => ['=' => 'single_space']] as replacement for ['align_equals' => false]. Use configuration: ['operators' => ['=>' => 'align']] as replacement for ['align_double_arrow' => true].
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'single_space', '=>' => 'align']] as replacement for ['align_equals' => false, 'align_double_arrow' => true].
      */
     public function testWrongConfigOldDeprecated4()
     {
@@ -762,7 +762,7 @@ $b;
 
     /**
      * @group legacy
-     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration: ['operators' => ['=' => 'align']] as replacement for ['align_equals' => true]. Use configuration: ['operators' => ['=>' => 'align']] as replacement for ['align_double_arrow' => true].
+     * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align', '=>' => 'align']] as replacement for ['align_equals' => true, 'align_double_arrow' => true].
      */
     public function testWrongConfigOldDeprecated5()
     {
