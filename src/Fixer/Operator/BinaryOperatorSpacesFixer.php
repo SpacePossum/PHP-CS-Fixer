@@ -540,7 +540,7 @@ $h = $i===  $j;
             if (
                 strtolower($content) === $tokenContent
                 && $this->tokensAnalyzer->isBinaryOperator($index)
-                && ('=' === $content ? !$this->isEqualPartOfDeclareStatement($tokens, $index) : true)
+                && ('=' !== $content || !$this->isEqualPartOfDeclareStatement($tokens, $index))
             ) {
                 $tokens[$index] = new Token(sprintf(self::ALIGN_PLACEHOLDER, $this->deepestLevel).$content);
 
@@ -681,15 +681,19 @@ $h = $i===  $j;
     private function fixWhiteSpaceBeforeOperator(Tokens $tokens, $index, $alignStrategy)
     {
         // fix white space after operator is not needed as BinaryOperatorSpacesFixer took care of this (if strategy is _not_ ALIGN)
-        if ($tokens[$index - 1]->isWhitespace()) {
-            if (self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy) {
-                $content = $tokens[$index - 1]->getContent();
-                if (' ' !== $content && false === strpos($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
-                    $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
-                }
-            }
-        } else {
+        if (!$tokens[$index - 1]->isWhitespace()) {
             $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
+
+            return;
+        }
+
+        if (self::ALIGN_SINGLE_SPACE_MINIMAL !== $alignStrategy || $tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
+            return;
+        }
+
+        $content = $tokens[$index - 1]->getContent();
+        if (' ' !== $content && false === strpos($content, "\n")) {
+            $tokens[$index - 1] = new Token([T_WHITESPACE, ' ']);
         }
     }
 
