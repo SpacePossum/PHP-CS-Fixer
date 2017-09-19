@@ -712,6 +712,26 @@ $b;
         ];
     }
 
+    public function testWrongConfigItem()
+    {
+        $this->setExpectedExceptionRegExp(
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            '/^\[binary_operator_spaces\] Invalid configuration: The option "foo" does not exist\. Defined options are: "align_double_arrow", "align_equals", "default", "operators"\.$/'
+        );
+
+        $this->fixer->configure(['foo' => true]);
+    }
+
+    public function testWrongConfigOldValue()
+    {
+        $this->setExpectedExceptionRegExp(
+            \PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class,
+            '/^\[binary_operator_spaces\] Invalid configuration: The option "align_double_arrow" with value 123 is invalid\. Accepted values are: true, false, null\.$/'
+        );
+
+        $this->fixer->configure(['align_double_arrow' => 123]);
+    }
+
     /**
      * @group legacy
      * @expectedDeprecation Given configuration is deprecated and will be removed in 3.0. Use configuration ['operators' => ['=' => 'align', '=>' => 'single_space']] as replacement for ['align_equals' => true, 'align_double_arrow' => false].

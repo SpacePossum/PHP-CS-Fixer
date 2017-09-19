@@ -443,12 +443,28 @@ $h = $i===  $j;
                     $newConfig['operators']['=>'] = self::ALIGN;
                 } elseif (false === $configuration[$name]) {
                     $newConfig['operators']['=>'] = self::SINGLE_SPACE;
+                } elseif (null !== $configuration[$name]) {
+                    throw new InvalidFixerConfigurationException(
+                        $this->getName(),
+                        sprintf(
+                            'Invalid configuration: The option "align_double_arrow" with value %s is invalid. Accepted values are: true, false, null.',
+                            $configuration[$name]
+                        )
+                    );
                 }
             } elseif ('align_equals' === $name) {
                 if (true === $configuration[$name]) {
                     $newConfig['operators']['='] = self::ALIGN;
                 } elseif (false === $configuration[$name]) {
                     $newConfig['operators']['='] = self::SINGLE_SPACE;
+                } elseif (null !== $configuration[$name]) {
+                    throw new InvalidFixerConfigurationException(
+                        $this->getName(),
+                        sprintf(
+                            'Invalid configuration: The option "align_equals" with value %s is invalid. Accepted values are: true, false, null.',
+                            $configuration[$name]
+                        )
+                    );
                 }
             } else {
                 throw new InvalidFixerConfigurationException($this->getName(), 'Mixing old configuration with new configuration is not allowed.');
