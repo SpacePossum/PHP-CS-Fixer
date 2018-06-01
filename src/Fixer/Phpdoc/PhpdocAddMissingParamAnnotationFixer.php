@@ -77,7 +77,7 @@ function f9(string $foo, $bar, $baz) {}',
      */
     public function getPriority()
     {
-        // must be run after PhpdocNoAliasTagFixer and before PhpdocAlignFixer
+        // must be run after NoEmptyPhpdocFixer and PhpdocNoAliasTagFixer and before PhpdocAlignFixer
         return -1;
     }
 

@@ -67,7 +67,7 @@ function foo() {}
      */
     public function getPriority()
     {
-        // must be run before the PhpdocSeparationFixer and PhpdocOrderFixer
+        // must be run before the PhpdocSeparationFixer, PhpdocOrderFixer and NoEmptyPhpdocFixer
         return 10;
     }
 

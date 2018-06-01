@@ -89,6 +89,7 @@ final class FixerFactoryTest extends TestCase
             array($fixers['no_empty_phpdoc'], $fixers['no_extra_consecutive_blank_lines']),
             array($fixers['no_empty_phpdoc'], $fixers['no_trailing_whitespace']),
             array($fixers['no_empty_phpdoc'], $fixers['no_whitespace_in_blank_line']),
+            array($fixers['no_empty_phpdoc'], $fixers['phpdoc_add_missing_param_annotation']),
             array($fixers['no_empty_statement'], $fixers['braces']),
             array($fixers['no_empty_statement'], $fixers['combine_consecutive_unsets']),
             array($fixers['no_empty_statement'], $fixers['no_extra_consecutive_blank_lines']),
