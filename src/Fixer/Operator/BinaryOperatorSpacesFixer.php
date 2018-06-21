@@ -515,6 +515,10 @@ $h = $i===  $j;
                 $this->injectAlignmentPlaceholders($tokensClone, 0, count($tokens), $tokenContent);
             }
 
+            if (!$tokensClone->isChanged()) {
+                continue;
+            }
+
             // for all tokens that should be aligned but do not have anything to align with, fix spacing if needed
             if (self::ALIGN_SINGLE_SPACE === $alignStrategy || self::ALIGN_SINGLE_SPACE_MINIMAL === $alignStrategy) {
                 if ('=>' === $tokenContent) {
