@@ -476,4 +476,42 @@ $a# 5
             ],
         ];
     }
+
+    /**
+     * @param string $expected
+     * @param string $input
+     *
+     * @requires PHP 7.3
+     * @dataProvider provideFix73Cases
+     */
+    public function testFix73($expected, $input)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix73Cases()
+    {
+        return [
+            [
+                '<?php $this->assertInternalType(\'array\', $a,);',
+                '<?php $this->assertTrue(is_array($a,),);',
+            ],
+            [
+                '<?php
+                    $this->assertNan($b);
+                ',
+                '<?php
+                    $this->assertTrue(\is_nan($b,));
+                ',
+            ],
+            [
+                '<?php
+                    $this->assertFileExists($f, \'message\',);
+                ',
+                '<?php
+                    $this->assertTrue(file_exists($f,), \'message\',);
+                ',
+            ],
+        ];
+    }
 }
