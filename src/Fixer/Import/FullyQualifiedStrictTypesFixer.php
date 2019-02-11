@@ -156,10 +156,22 @@ class SomeClass
         }
 
         $typeName = $type->getName();
-        $shortType = (new TypeShortNameResolver())->resolve($tokens, $type->getName());
+
+        $nullable = false;
+        if (0 === strpos($typeName, '?')) {
+            $nullable = true;
+            $typeName = substr($typeName, 1);
+        }
+
+        $shortType = (new TypeShortNameResolver())->resolve($tokens, $typeName);
+
         if ($shortType === $typeName) {
             return;
         }
+
+        $shortType = true === $nullable ?
+            '?'.$shortType:
+            $shortType;
 
         $tokens->overrideRange(
             $type->getStartIndex(),
