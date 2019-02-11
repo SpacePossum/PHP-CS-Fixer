@@ -37,6 +37,19 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @requires PHP 7.1
+     *
+     * @dataProvider provideCodeWithReturnTypesCasesWithNullableCases
+     *
+     * @param mixed      $expected
+     * @param null|mixed $input
+     */
+    public function testCodeWithReturnTypesWithNullable($expected, $input = null)
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
      * @dataProvider provideCodeWithoutReturnTypesCases
      *
      * @param mixed      $expected
@@ -377,6 +390,39 @@ class SomeClass
 function withReference(Exception &$e) {}',
                 '<?php
 function withReference(\Exception &$e) {}',
+            ],
+        ];
+    }
+
+    public function provideCodeWithReturnTypesCasesWithNullableCases()
+    {
+        return [
+            // Test namespace fixes with nullable types
+            [
+                '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+class SomeClass
+{
+    public function doSomething(SomeClass $foo, Buz $buz, ?Zoof\Buz $barbuz): ?Baz
+    {
+    }
+}',
+                '<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar\Baz;
+
+class SomeClass
+{
+    public function doSomething(\Foo\Bar\SomeClass $foo, \Foo\Bar\Buz $buz, ?\Foo\Bar\Zoof\Buz $barbuz): ?\Foo\Bar\Baz
+    {
+    }
+}',
             ],
         ];
     }
