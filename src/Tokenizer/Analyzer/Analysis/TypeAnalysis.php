@@ -76,7 +76,9 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
      */
     public function getName()
     {
-        return $this->name;
+        return $this->isNullable() ?
+            substr($this->name, 1) :
+            $this->name;
     }
 
     /**
@@ -101,5 +103,13 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
     public function isReservedType()
     {
         return \in_array($this->name, self::$reservedTypes, true);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNullable()
+    {
+        return 0 === strpos($this->name, '?');
     }
 }
