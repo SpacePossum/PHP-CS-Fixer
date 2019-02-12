@@ -60,6 +60,11 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
     private $endIndex;
 
     /**
+     * @var bool
+     */
+    private $nullable;
+
+    /**
      * @param string $name
      * @param int    $startIndex
      * @param int    $endIndex
@@ -67,6 +72,13 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
     public function __construct($name, $startIndex, $endIndex)
     {
         $this->name = $name;
+        $this->nullable = false;
+
+        if (0 === strpos($name, '?')) {
+            $this->name = substr($name, 1);
+            $this->nullable = true;
+        }
+
         $this->startIndex = $startIndex;
         $this->endIndex = $endIndex;
     }
@@ -76,9 +88,7 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
      */
     public function getName()
     {
-        return $this->isNullable() ?
-            substr($this->name, 1) :
-            $this->name;
+        return $this->name;
     }
 
     /**
@@ -110,6 +120,6 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
      */
     public function isNullable()
     {
-        return 0 === strpos($this->name, '?');
+        return $this->nullable;
     }
 }
