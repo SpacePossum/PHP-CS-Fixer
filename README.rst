@@ -1126,6 +1126,10 @@ Choose from the list of available rules:
 
   There MUST be no trailing spaces inside comment or PHPDoc.
 
+* **no_unneeded_block**
+
+  Remove overcomplete blocks.
+
 * **no_unneeded_control_parentheses** [@Symfony, @PhpCsFixer]
 
   Removes unneeded parentheses around control statements.
