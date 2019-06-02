@@ -129,6 +129,13 @@ namespace Foo;
             [
                 '<?php
 namespace Foo;
+',
+                '<?php
+namespace Foo;',
+            ],
+            [
+                '<?php
+namespace Foo;
 
 ?>',
                 '<?php
@@ -137,6 +144,12 @@ namespace Foo;
 
 
 ?>',
+            ],
+            [
+                '<?php
+    namespace Foo;
+
+    class Bar {}',
             ],
             [
                 '<?php
