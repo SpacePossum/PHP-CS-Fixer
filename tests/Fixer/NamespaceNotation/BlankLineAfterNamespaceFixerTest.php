@@ -153,6 +153,15 @@ namespace Foo;
             ],
             [
                 '<?php
+  namespace Foo;
+
+      class Bar {}',
+                '<?php
+  namespace Foo;
+      class Bar {}',
+            ],
+            [
+                '<?php
     namespace My\NS;
 
     class X extends Y {}',
