@@ -142,13 +142,13 @@ namespace Foo;
                 '<?php
     namespace My\NS;
 
-    class X extends Y {}'
+    class X extends Y {}',
             ],
             [
                 '<?php
 namespace My\NS; // comment
 
-class X extends Y {}'
+class X extends Y {}',
             ],
         ];
     }
