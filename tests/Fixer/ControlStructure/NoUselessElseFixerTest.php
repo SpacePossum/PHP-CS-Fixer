@@ -776,8 +776,8 @@ else?><?php echo 5;',
     }
 
     /**
-     * @param string            $input
-     * @param string<int, bool> $indexes
+     * @param string           $input
+     * @param array<int, bool> $indexes
      *
      * @dataProvider provideIsInConditionWithoutBracesCases
      */
@@ -954,7 +954,7 @@ else?><?php echo 5;',
      * @param string      $expected
      * @param null|string $input
      *
-     * @return array<string, string>
+     * @return array<array<string>>
      */
     private function generateCases($expected, $input = null)
     {
