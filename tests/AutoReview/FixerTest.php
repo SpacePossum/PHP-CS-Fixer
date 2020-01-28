@@ -254,6 +254,75 @@ final class FixerTest extends TestCase
         }, $fixers);
     }
 
+
+
+    public function testFixersMethodsAreSorted()
+    {
+        $factory = new FixerFactory();
+        $filters = ['public' => \ReflectionMethod::IS_PUBLIC, 'protected' => \ReflectionMethod::IS_PROTECTED, 'private' => \ReflectionMethod::IS_PRIVATE];
+        $fixersMethods = [];
+
+        foreach ($filters as $name => $filter) {
+            $fixersMethods[$name] = [];
+        }
+
+        foreach ($factory->registerBuiltInFixers()->getFixers() as $fixer) {
+            $reflection = new \ReflectionClass($fixer);
+
+            foreach ($filters as $name => $filter) {
+                $methods = $this->getMethodNames($reflection, $filter);
+
+                $sortedMethods = $methods;
+                sort($sortedMethods);
+
+                if ($sortedMethods !== $methods) {
+                    $fixersMethods[$name][] = $reflection->getName();
+                }
+            }
+        }
+
+        $message = '';
+
+        foreach ($fixersMethods as $scope => $fixerClasses) {
+            if (0 === \count($fixerClasses)) {
+                continue;
+            }
+
+            sort($fixerClasses);
+            $message .= sprintf("\n\nFixers with unsorted \"%s\" methods:\n%s", $scope, implode("\n", $fixerClasses));
+        }
+
+        if ('' === $message) {
+            $this->addToAssertionCount(1);
+        } else {
+            static::fail(ltrim($message));
+        }
+    }
+
+    /**
+     * @param int $filter
+     *
+     * @return string[]
+     */
+    private function getMethodNames(\ReflectionClass $reflection, $filter)
+    {
+        $methods = array_filter(
+            $reflection->getMethods($filter),
+            static function (\ReflectionMethod $reflectionMethod) use ($reflection) {
+                return $reflectionMethod->getDeclaringClass()->getName() === $reflection->getName();
+            }
+        );
+
+        array_walk(
+            $methods,
+            static function (\ReflectionMethod &$method) {
+                $method = $method->getName();
+            }
+        );
+
+        return $methods;
+    }
+
     private function getAllFixers()
     {
         $factory = new FixerFactory();
