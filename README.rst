@@ -1653,6 +1653,11 @@ Choose from the list of available rules:
 
   Fix PHPDoc inline tags, make ``@inheritdoc`` always inline.
 
+  Configuration options:
+
+  - ``inheritdoc_case`` (``'camel_case'``, ``'lower_case'``): apply lower or camel case
+    to ``inheritdoc``; defaults to ``'lower_case'``
+
 * **phpdoc_line_span**
 
   Changes doc blocks from single to multi line, or reversed. Works for

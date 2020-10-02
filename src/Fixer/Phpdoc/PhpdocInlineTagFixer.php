@@ -13,6 +13,9 @@
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\ConfigurationDefinitionFixerInterface;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
+use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Preg;
@@ -22,7 +25,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Fix inline tags and make inheritdoc tag always inline.
  */
-final class PhpdocInlineTagFixer extends AbstractFixer
+final class PhpdocInlineTagFixer extends AbstractFixer implements ConfigurationDefinitionFixerInterface
 {
     /**
      * {@inheritdoc}
@@ -31,7 +34,8 @@ final class PhpdocInlineTagFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Fix PHPDoc inline tags, make `@inheritdoc` always inline.',
-            [new CodeSample(
+            [
+                new CodeSample(
                 '<?php
 /**
  * @{TUTORIAL}
@@ -40,7 +44,16 @@ final class PhpdocInlineTagFixer extends AbstractFixer
  * @inheritdocs
  */
 '
-            )]
+                ),
+                new CodeSample(
+                    '<?php
+/**
+ * {@inheritdoc}
+ */
+',
+                    ['inheritdoc_case' => 'camel_case']
+                ),
+            ]
         );
     }
 
@@ -68,6 +81,8 @@ final class PhpdocInlineTagFixer extends AbstractFixer
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens)
     {
+        $inheritdocCamelCase = 'camel_case' === $this->configuration['inheritdoc_case'];
+
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
@@ -101,7 +116,24 @@ final class PhpdocInlineTagFixer extends AbstractFixer
                 $content
             );
 
+            if ($inheritdocCamelCase){
+                $content = str_replace('@inheritdoc', '@inheritDoc', $content);
+            }
+
             $tokens[$index] = new Token([T_DOC_COMMENT, $content]);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createConfigurationDefinition()
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('inheritdoc_case', 'Apply lower or camel case to `inheritdoc`'))
+                ->setAllowedValues(['lower_case', 'camel_case'])
+                ->setDefault('lower_case')
+                ->getOption(),
+        ]);
     }
 }
