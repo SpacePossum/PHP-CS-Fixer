@@ -25,8 +25,8 @@ use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\Linter\CachingLinter;
-use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\Linter\ProcessLinter;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tests\TestCase;
@@ -464,7 +464,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
                 $linter = $linterProphecy->reveal();
             } else {
-                $linter = new CachingLinter(new Linter());
+                $linter = new CachingLinter(new ProcessLinter());
             }
         }
 
