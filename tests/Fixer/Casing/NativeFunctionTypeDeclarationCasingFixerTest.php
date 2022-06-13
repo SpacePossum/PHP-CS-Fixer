@@ -172,6 +172,16 @@ function Foo(INTEGER $a) {}
             '<?php function foo(): int|bool {}',
             '<?php function foo(): INT|BOOL {}',
         ];
+
+        yield 'return type string|false' => [
+            '<?php function foo(): string|false {}',
+            '<?php function foo(): string|FALSE {}',
+        ];
+
+        yield 'return type string|null' => [
+            '<?php function foo(): string|null {}',
+            '<?php function foo(): string|NULL {}',
+        ];
     }
 
     /**
@@ -189,6 +199,28 @@ function Foo(INTEGER $a) {}
         yield 'return type `never`' => [
             '<?php class T { public function Foo(object $A): never {die;}}',
             '<?php class T { public function Foo(object $A): NEVER {die;}}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix82Cases
+     * @requires PHP 8.2
+     */
+    public function testFix82(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    public function provideFix82Cases(): \Generator
+    {
+        yield 'return type `false`' => [
+            '<?php class T { public function Foo(object $A): false {return false;}}',
+            '<?php class T { public function Foo(object $A): FALSE {return false;}}',
+        ];
+
+        yield 'return type `null`' => [
+            '<?php class T { public function Foo(object $A): null {return null;}}',
+            '<?php class T { public function Foo(object $A): NULL {return null;}}',
         ];
     }
 }
