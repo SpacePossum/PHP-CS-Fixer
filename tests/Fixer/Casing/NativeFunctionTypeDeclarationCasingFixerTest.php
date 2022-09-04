@@ -213,14 +213,19 @@ function Foo(INTEGER $a) {}
 
     public function provideFix82Cases(): \Generator
     {
-        yield 'return type `false`' => [
-            '<?php class T { public function Foo(object $A): false {return false;}}',
-            '<?php class T { public function Foo(object $A): FALSE {return false;}}',
+        yield 'standalone type `true`' => [
+            '<?php class T { public function Foo(true $A): true {return $A;}}',
+            '<?php class T { public function Foo(True $A): TRUE {return $A;}}',
         ];
 
-        yield 'return type `null`' => [
-            '<?php class T { public function Foo(object $A): null {return null;}}',
-            '<?php class T { public function Foo(object $A): NULL {return null;}}',
+        yield 'standalone type `false`' => [
+            '<?php class T { public function Foo(false $A): false {return $A;}}',
+            '<?php class T { public function Foo(False $A): FALSE {return $A;}}',
+        ];
+
+        yield 'standalone type `null`' => [
+            '<?php class T { public function Foo(null $A): null {return $A;}}',
+            '<?php class T { public function Foo(Null $A): NULL {return $A;}}',
         ];
     }
 }
