@@ -211,7 +211,7 @@ function Foo(INTEGER $a) {}
         $this->doTest($expected, $input);
     }
 
-    public function provideFix82Cases(): \Generator
+    public function provideFix82Cases(): iterable
     {
         yield 'standalone type `true`' => [
             '<?php class T { public function Foo(true $A): true {return $A;}}',
