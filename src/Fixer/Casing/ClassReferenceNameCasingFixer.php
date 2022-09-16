@@ -81,7 +81,8 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
         static $blockKinds;
 
         if (null === $notBeforeKinds) {
-            $notBeforeKinds = [
+            $notBeforeKinds = Token::getObjectOperatorKinds();
+            $notBeforeKinds += [
                 CT::T_USE_TRAIT,
                 T_AS,
                 T_CASE, // PHP 8.1 trait enum-case
@@ -91,7 +92,6 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
                 T_DOUBLE_COLON,
                 T_FUNCTION,
                 T_INTERFACE,
-                T_OBJECT_OPERATOR,
                 T_TRAIT,
             ];
 
