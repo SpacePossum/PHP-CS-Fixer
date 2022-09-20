@@ -116,6 +116,8 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
 
     /**
      * @var list<list<int>|string>
+     *
+     * @readonly
      */
     private array $noopTypes;
 
@@ -125,7 +127,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     {
         parent::__construct();
 
-        $this->noopTypes = [
+        $this->noopTypes = array_merge([
             '$',
             [T_CONSTANT_ENCAPSED_STRING],
             [T_DNUMBER],
@@ -144,11 +146,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
             [T_METHOD_C],
             [T_NS_C],
             [T_TRAIT_C],
-        ];
-
-        foreach (Token::getObjectOperatorKinds() as $kind) {
-            $this->noopTypes[] = [$kind];
-        }
+        ], array_map(function ($kind) { return [$kind]; }, Token::getObjectOperatorKinds()));
     }
 
     /**
