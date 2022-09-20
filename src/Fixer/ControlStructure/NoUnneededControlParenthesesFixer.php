@@ -117,9 +117,39 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     /**
      * @var list<list<int>|string>
      */
-    private array $noopTypes = [];
+    private array $noopTypes;
 
     private TokensAnalyzer $tokensAnalyzer;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->noopTypes = [
+            '$',
+            [T_CONSTANT_ENCAPSED_STRING],
+            [T_DNUMBER],
+            [T_DOUBLE_COLON],
+            [T_LNUMBER],
+            [T_NS_SEPARATOR],
+            [T_STRING],
+            [T_VARIABLE],
+            [T_STATIC],
+            // magic constants
+            [T_CLASS_C],
+            [T_DIR],
+            [T_FILE],
+            [T_FUNC_C],
+            [T_LINE],
+            [T_METHOD_C],
+            [T_NS_C],
+            [T_TRAIT_C],
+        ];
+
+        foreach (Token::getObjectOperatorKinds() as $kind) {
+            $this->noopTypes[] = [$kind];
+        }
+    }
 
     /**
      * {@inheritdoc}
@@ -179,33 +209,6 @@ while ($y) { continue (2); }
      */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        if (0 === \count($this->noopTypes)) {
-            $this->noopTypes = [
-                '$',
-                [T_CONSTANT_ENCAPSED_STRING],
-                [T_DNUMBER],
-                [T_DOUBLE_COLON],
-                [T_LNUMBER],
-                [T_NS_SEPARATOR],
-                [T_STRING],
-                [T_VARIABLE],
-                [T_STATIC],
-                // magic constants
-                [T_CLASS_C],
-                [T_DIR],
-                [T_FILE],
-                [T_FUNC_C],
-                [T_LINE],
-                [T_METHOD_C],
-                [T_NS_C],
-                [T_TRAIT_C],
-            ];
-
-            foreach (Token::getObjectOperatorKinds() as $kind) {
-                $this->noopTypes[] = [$kind];
-            }
-        }
-
         $this->tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokens as $openIndex => $token) {
