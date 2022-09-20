@@ -116,8 +116,6 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
 
     /**
      * @var list<list<int>|string>
-     *
-     * @readonly
      */
     private array $noopTypes;
 
